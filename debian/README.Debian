@@ -34,3 +34,31 @@ changes in your configuration may require changes to the installed apparmor
 profile. Please see https://wiki.ubuntu.com/DebuggingApparmor before filing a
 bug against this software.
 
+
+initramfs-tools hook and supplementary files
+--------------------------------------------
+
+isc-dhcp-client ships a hook for initramfs-tools to install dhclient in the
+initramfs, so that systems may bring up IPv4 and IPv6 networking in early
+userspace, in order to mount remote filesystems, etc.
+
+The included "config" script for dhclient-enter-hooks shipping in isc-dhcp-
+client for the initramfs is based off the existing "debug" script. The
+following variables are made available for scripts in the initramfs:
+
+It writes out /run/net-$iface.conf and /run/net6-$iface.conf in a format that
+is compatible with the old ipconfig format:
+
+ - DEVICE/DEVICE6: the network interface configured.
+ - PROTO/IPV4PROTO/IPV6PROTO: configuration protocol used (usually DHCP)
+ - IPV4ADDR/IPV6ADDR: IP address
+ - IPV4NETMASK/IPV6NETMASK: netmask
+ - IPV4GATEWAY/IPV6GATEWAY: network gateway
+ - IPV4DNS0/IPV6DNS0: domain name servers
+ - ROOTSERVER: next/filesystem server for remote root (IPv4 only)
+ - HOSTNAME: system hostname
+ - DNSDOMAIN: DNS domain 
+ - DOMAINSEARCH/IPV6DOMAINSEARCH: search domains
+ 
+See http://git.kernel.org/cgit/libs/klibc/klibc.git/tree/usr/kinit/ipconfig/README.ipconfig
+

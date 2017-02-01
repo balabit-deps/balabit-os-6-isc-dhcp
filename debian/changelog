@@ -1,3 +1,36 @@
+isc-dhcp (4.3.3-5ubuntu12.7) xenial; urgency=medium
+
+  * debian/control : Add "Replaces:" option for package isc-dhcp-client 
+    to allow the packaging system to remove "isc-dhcp-client-noddns" on 
+    systems on which it is installed and replace it by "isc-dhcp-client" 
+    during a release upgrade from Trusty to Xenial. (LP: #1176046)
+
+ -- Eric Desrochers <eric.desrochers@canonical.com>  Wed, 01 Feb 2017 08:36:18 -0500
+
+isc-dhcp (4.3.3-5ubuntu12.6) xenial; urgency=medium
+
+  * debian/initramfs/lib/etc/dhcp/dhclient-enter-hooks.d/config: clean up
+    script to remove IPv4 bits that would never be called; since for this SRU
+    we only do IPv6. (LP: #1621507)
+
+ -- Mathieu Trudel-Lapierre <cyphermox@ubuntu.com>  Thu, 08 Dec 2016 17:43:34 +0100
+
+isc-dhcp (4.3.3-5ubuntu12.5) xenial; urgency=medium
+
+  * debian/initramfs/lib/etc/dhcp/dhclient-enter-hooks.d/config: fix script to
+    not write to /run/net-$iface.conf when dealing with IPv6; which should only
+    write to a /run/net6-$iface.conf file. (LP: #1621507)
+  * debian/README.Debian: document what this config script is and why a hook is
+    shipped for the initramfs.
+
+ -- Mathieu Trudel-Lapierre <cyphermox@ubuntu.com>  Fri, 04 Nov 2016 10:57:07 -0600
+
+isc-dhcp (4.3.3-5ubuntu12.4) xenial; urgency=medium
+
+  * ipv6: wait for duplicate address detection to finish (LP: #1633479).
+
+ -- Scott Moser <smoser@ubuntu.com>  Mon, 31 Oct 2016 14:32:14 -0400
+
 isc-dhcp (4.3.3-5ubuntu12.3) xenial; urgency=medium
 
   [ Mathieu Trudel-Lapierre ]

@@ -127,6 +127,8 @@ Depends:
  iproute2 [linux-any] | freebsd-net-tools [kfreebsd-any],
 Recommends:
  isc-dhcp-common,
+Replaces:
+ isc-dhcp-client-noddns,
 Suggests:
  resolvconf,
  avahi-autoipd,

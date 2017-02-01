@@ -24,6 +24,9 @@ export BASH_XTRACEFD=
 
 # The alias handling in here probably still sucks. -mdz
 
+# log an error.
+error() { logger -p daemon.err "$@"; }
+
 # wait for given file to be writable
 wait_for_rw() {
     local file=$1
@@ -148,6 +151,35 @@ set_hostname() {
            fi
         fi
     fi
+}
+
+# set the link up and wait for ipv6 link local dad to finish
+ipv6_link_up_and_dad() {
+    local dev=$1 delay=${2:-0.1} attempts=${3:-60}
+    ip link set up dev "$dev" ||
+        { error "$dev: failed to set link up"; return 1; }
+    local n=0
+    while :; do
+        n=$((n+1))
+        # note: busybox ip does not understand 'tentative' as input
+        # so we cannot just use the tentative flag and check for empty
+        out=$(ip -6 -o address show dev "$dev" scope link) || {
+            error "$dev: checking for link-local addresses failed";
+            return 1
+        }
+        case " $out " in
+            *\ dadfailed\ *)
+                error "$dev: ipv6 dad failed."
+                return 1;;
+            *\ tentative\ *) :;;
+            *) return 0;;
+        esac
+        [ $n -lt $attempts ] || {
+            error "$dev: time out waiting for permanent link-local address"
+            return 1;
+        }
+        sleep $delay
+    done
 }
 
 # run given script
@@ -391,7 +423,7 @@ case "$reason" in
 
     PREINIT6)
         # ensure interface is up
-        ip link set ${interface} up
+        ipv6_link_up_and_dad "$interface"
 
         # flush any stale global permanent IPs from interface
         ip -6 addr flush dev ${interface} scope global permanent
