@@ -25,3 +25,5 @@ dhcp-gpxe-cid.patch
 dhcp-improved-xid-correct-byte-order.patch
 CVE-2015-8605.patch
 dhcp-4.2.4-dhclient-options-changed.patch
+CVE-2016-2774.patch
+CVE-2018-573x.patch

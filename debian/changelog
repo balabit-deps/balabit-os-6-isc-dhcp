@@ -1,3 +1,27 @@
+isc-dhcp (4.3.3-5ubuntu12.9) xenial-security; urgency=medium
+
+  * SECURITY UPDATE: DoS via concurrent TCP sessions
+    - debian/patches/CVE-2016-2774.patch: limit number of connections in
+      includes/site.h, omapip/listener.c.
+    - CVE-2016-2774
+  * SECURITY UPDATE: DoS via omapi
+    - debian/patches/CVE-2018-573x.patch: fix socket descriptor leak in
+      omapip/buffer.c, omapip/message.c.
+    - CVE-2017-3144
+  * SECURITY UPDATE: buffer overflow in dhclient
+    - debian/patches/CVE-2018-573x.patch: check option data size in
+      common/options.c, add tests to common/tests/Makefile.am,
+      common/tests/option_unittest.c.
+    - CVE-2018-5732
+  * SECURITY UPDATE: reference counter overflow in dhcpd
+    - debian/patches/CVE-2018-573x.patch: avoid overflow in
+      common/options.c.
+    - CVE-2018-5733
+  * This package does _not_ contain the changes from 4.3.3-5ubuntu12.8 in
+    xenial-proposed.
+
+ -- Marc Deslauriers <marc.deslauriers@ubuntu.com>  Thu, 01 Mar 2018 08:20:48 -0500
+
 isc-dhcp (4.3.3-5ubuntu12.7) xenial; urgency=medium
 
   * debian/control : Add "Replaces:" option for package isc-dhcp-client 
